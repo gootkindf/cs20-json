@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <style>
+        .product { border: 1px solid #ccc; border-radius: 6px; padding: .75rem 1rem; margin: .75rem 0; background: #fafafa; }
+        .product h2 { margin: 0 0 .25rem; font-size: 1.15rem; }
+        .product p { margin: .2rem 0; }
+        .price { font-weight: bold; color: #1a6b2f; }
+        .categories { font-style: italic; color: #555; }
+    </style>
+</head>
+<body>
+    <h1>Product Catalog</h1>
+    <button id="loadProductsButton">Load Products</button>
+
+    <div id="result"></div>
+
+    <script>
+        $("#loadProductsButton").click(function () {
+            $.get("products.json", function (data) {
+                var products = (typeof data === "string") ? JSON.parse(data) : data;
+                var html = "";
+                for (var i = 0; i < products.length; i++) {
+                    var p = products[i];
+                    html += '<div class="product">' +
+                            '<h2>' + p.name + '</h2>' +
+                            '<p>' + p.description + '</p>' +
+                            '<p class="price">Price: $' + p.price + '</p>' +
+                            '<p class="categories">Categories: ' + p.categories.join(", ") + '</p>' +
+                            '</div>';
+                }
+                document.getElementById("result").innerHTML = html;
+            });
+        });
+    </script>
+</body>
+</html>
