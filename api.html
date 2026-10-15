@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Products</title>
+    <title>Pokemon Lookup</title>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <style>
         .product { border: 1px solid #ccc; border-radius: 6px; padding: .75rem 1rem; margin: .75rem 0; background: #fafafa; }
@@ -14,25 +14,43 @@
     </style>
 </head>
 <body>
+    <h1>PokeApi</h1>
+
+    <input type="text" id="pokemonName" placeholder="Enter a Pokemon name">
+    <button id="lookupButton">Look up</button>
+
+    <div id='placeholder'>&nbsp;</div>
+
+    <p>I chose PokeApi, simply because I knew about it from a friend and I enjoy pokemon</p>
+    <p>Website: https://pokeapi.co/</p>
+    <p>The only thing required for the API is the Pokemon name</p>
+    <p>This would be useful in any kind of Pokemon game simulator, such as Pokemon showdown</p>
     <script>
-    fetch('https://pokeapi.co/api/v2/pokemon/tyranitar')
+        document.getElementById("lookupButton").addEventListener("click", function () {
+        var name = document.getElementById("pokemonName").value.toLowerCase();
+
+    fetch('https://pokeapi.co/api/v2/pokemon/' + name)
         .then(response => response.json())
         .then(data => {
             console.log(data);
             var s = "<p> Pokemon Info </p>";
+            var types = "";
+            for (var i = 0; i < data.types.length; i++) {
+               types += data.types[i].type.name + " ";
+}
             // for (var i = 0; i < data.length; i++){
                 s += '<div class="pokemon">' + 
-                    '<h3>' + data.name + '</h3>' +
-                    '<p>' + data.id + '</p>' +
-                    '<p>' + data.height + '</p>' +
-                    '<p>' + data.weight + '</p>' +
-                    // '<p>' + data.types + '</p>' +
+                    '<h3>' + 'Name: ' + data.name + '</h3>' +
+                    '<p>' + 'ID: ' + data.id + '</p>' +
+                    '<p>' + 'Height: ' + data.height + '</p>' +
+                    '<p>' + 'Weight: ' + data.weight + '</p>' +
+                    '<p>' + 'Types: ' + types + '</p>' +
                     '<img src="' + data.sprites.front_default + '">' +                    '</div>';
             document.getElementById("placeholder").innerHTML = s;
 
             })
         .catch(error => console.error('Error fetching data:', error));
-
+    });
     </script>
     <div id='placeholder'>&nbsp;</div>
 </body>
